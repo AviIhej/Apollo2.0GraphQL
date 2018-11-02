@@ -42,6 +42,7 @@ const employers = [
     },
 ]
 
+// TYPEDEFS TYPEDEFS TYPEDEFS
 const typeDefs = gql`
     type Query {
         employers: [Employer]
@@ -65,15 +66,14 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addEmployee(id: Int!, name: String!): Employee
+        addEmployee(employerId: Int!, name: String!): Employee
         removeEmployee(id: Int!): [Employee]
         changeEmployeeName(id: Int!, name: String!): Employee
-        changeEmployer(id: Int!, employerId: String!): Employee
+        changeEmployer(id: Int!, employerId: Int!): Employee
     }
 `
 
-// 4 argumrnts that get pased to all resolvers: (parent, args, context, info)
-
+// RESOLVERS RESOLVERS RESOLVERS
 const resolvers = {
     Query: {
         employer: (parentValue, args, context, info) => employers.filter(e => e.id === args.id)[0],
@@ -136,11 +136,12 @@ const resolvers = {
                 if(e.id === args.id){
                     newEmployee = {
                         ...e,
-                        employerId: args.id
+                        employerId: args.employerId
                     }
                     // adds the newEmployee to the employees Arrat
                     return newEmployee
                 }
+                return e
                 // If none of these conditions are met, then just return e, aka keep traversing through the list of employees
             })
             // Finally return an employee, like as we specified the return type would be in the typedef
