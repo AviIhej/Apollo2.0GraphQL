@@ -99,7 +99,54 @@ const resolvers = {
             // to return one employer
             return employers.filter(e => e.id ===  parentValue.employerId)[0]
         }
-    }
+    },
+    Mutation: {
+        addEmployee: (_, args) => {
+            const newEmployee = {
+                id: employees.length + 1,
+                name: args.name,
+                employerId: args.employerId
+            }
+            employees.push(newEmployee)
+            return newEmployee
+        },
+        removeEmployee: (_, args) => {
+            return employees.filter(e => e.id !== args.id)
+        },
+        changeEmployeeName: (_,args) => {
+            let newEmployee;
+            // Change employees array
+            employees = employees.map(e => {
+                if(e.id === args.id){
+                    newEmployee ={
+                        ...e,
+                        name: args.name,
+                    };
+                return newEmployee
+                }
+                //if condition is not matched return e
+                return e;
+            })
+            // return changed employee
+            return newEmployee
+        },
+        changeEmployer: (_, args) => {
+            let newEmployee;
+            employees = employees.map(e => {
+                if(e.id === args.id){
+                    newEmployee = {
+                        ...e,
+                        employerId: args.id
+                    }
+                    // adds the newEmployee to the employees Arrat
+                    return newEmployee
+                }
+                // If none of these conditions are met, then just return e, aka keep traversing through the list of employees
+            })
+            // Finally return an employee, like as we specified the return type would be in the typedef
+            return newEmployee
+        },
+    },
 }
 
 const server = new ApolloServer({typeDefs, resolvers})
