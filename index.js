@@ -70,6 +70,7 @@ const resolvers = {
   Employer: {
     numEmployees: parentValue => {
       console.log("parentValue in Employer: ", parentValue);
+      console.log(args)
       return employees.filter(e => e.employerId === parentValue.id).length;
     },
     employees: parentValue => {
